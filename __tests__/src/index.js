@@ -4,6 +4,9 @@ describe("Index - server", () => {
       use: jest.fn(),
       listen: jest.fn(),
       get: jest.fn(),
+      post: jest.fn(),
+      put: jest.fn(),
+      delete: jest.fn(),
     };
     jest.mock("express", () => {
       return () => {
@@ -17,6 +20,9 @@ describe("Index - server", () => {
     expect(mockApp.listen).toHaveBeenCalled();
     expect(mockApp.listen).toHaveBeenCalledWith(3000, expect.any(Function));
     expect(mockApp.get).toHaveBeenCalled();
-    expect(mockApp.get).toHaveBeenCalledWith("/", expect.any(Function));
+    expect(mockApp.get).toHaveBeenCalledWith("/api/notes", expect.any(Function));
+    expect(mockApp.post).toHaveBeenCalledWith("/api/notes", expect.any(Function));
+    expect(mockApp.put).toHaveBeenCalledWith("/api/notes", expect.any(Function));
+    expect(mockApp.delete).toHaveBeenCalledWith("/api/notes", expect.any(Function));
   });
 });
