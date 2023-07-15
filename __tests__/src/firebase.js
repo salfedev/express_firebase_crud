@@ -1,5 +1,5 @@
 import 'dotenv/config';
-const { writeNote, readNotes } = require("../src/firebase");
+const { writeNote, readNotes } = require("../../src/firebase");
 describe("Firebase", () => {
   it("should write a note to the database", async () => {
     jest.mock("firebase/app", () => {
