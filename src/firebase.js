@@ -29,29 +29,13 @@ const writeNote = async (userId, note) => {
   })
 };
 
-// read all user's notes from firebase
-const readNotes = async (userId, callback) => {
-  const docRef = ref(db, `users/${userId}/notes`);
-  return await onValue(docRef, (snapshot) => {
-    const data = snapshot.val();
-    callback(data);
-  }).catch((error) => {
-    log("Failed to read doc from the database", error);
-    return error;
-  });
-};
-
-// read single note from firebase
+// read all or a single note from firebase
 const readNote = async (userId, noteId, callback) => {
-  const noteRef = ref(db, `users/${userId}/notes/${noteId}`);
+  let noteRef = noteId ? ref(db, `users/${userId}/notes/${noteId}`) : ref(db, `users/${userId}/notes`);
   return await onValue(noteRef, (snapshot) => {
     const data = snapshot.val();
     callback(data);
   })
-  .catch((error) => {
-    log("Failed to read note from the database", error);
-    return error;
-  });
 };
 
 const updateNote = async (userId, noteId, note) => {
@@ -72,7 +56,6 @@ const deleteNote = async (userId, noteId) => {
 
 module.exports = {
   writeNote,
-  readNotes,
   readNote,
   updateNote,
   deleteNote,

@@ -7,16 +7,20 @@ import {
   log_red,
   log_yellow
 } from "./logger.js";
+
 import {
   writeNote,
-  readNotes,
   readNote,
   updateNote,
   deleteNote,
 } from "./firebase.js";
 import uuid4 from "uuid4";
+
+// initialize express
 const app = express();
 app.use(cors());
+
+// port
 const port = process.env.PORT || 3000;
 // get all notes, or a single note
 app.get("/api/notes", async (req, res) => {
@@ -28,7 +32,7 @@ app.get("/api/notes", async (req, res) => {
       return res.send(data);
     });
   }else {
-    await readNotes(userId, (data) => {
+    await readNote(userId, null, (data) => {
       return res.send(data);
     });
   }
