@@ -17,7 +17,7 @@ const firebaseConfig = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 // Initialize Firebase
-log('Intialiazing with: ', firebaseConfig);
+log("Intialiazing with: project -", firebaseConfig.projectId);
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
@@ -65,11 +65,18 @@ const updateNote = async (userId, noteId, note) => {
   });
 };
 
-
+const deleteNote = async (userId, noteId) => {
+  set(ref(db, `users/${userId}/notes/${noteId}`), null)
+  .catch((error) => {
+    log("Failed to delete note from the database", error);
+    return error;
+  });
+};
 
 module.exports = {
   writeNote,
   readNotes,
   readNote,
   updateNote,
+  deleteNote,
 };

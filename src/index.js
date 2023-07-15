@@ -48,9 +48,9 @@ app.post("/api/notes", async (req, res) => {
     return error;
   });
 });
-app.put("/api/notes/:noteID", async (req, res) => {
-  log_yellow(`PUT HTTP method on /notes/${req.params.noteID} resource`);
+app.put("/api/notes/", async (req, res) => {
   const { userId, noteId, title, content, tags } = req.query;
+  log_yellow(`PUT HTTP method on /notes/${noteId} resource`);
   const note = {
     userId,
     title,
@@ -68,7 +68,8 @@ app.put("/api/notes/:noteID", async (req, res) => {
   });
 });
 app.delete("/api/notes/:noteID", (req, res) => {
-  return res.send(`DELETE HTTP method on /notes/${req.params.noteID} resource`);
+  log_red(`DELETE HTTP method on /notes/${req.params.noteID} resource`);
+  const { userId, noteId } = req.query;
 });
 app.listen(port, () => {
   log_green(`Server listening on port ${port}!`);

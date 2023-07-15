@@ -36,7 +36,7 @@ describe("Index - server", () => {
     expect(mockApp.get).toHaveBeenCalledWith("/api/notes", expect.any(Function));
     expect(mockApp.post).toHaveBeenCalledWith("/api/notes", expect.any(Function));
     expect(mockApp.put).toHaveBeenCalledWith(
-      "/api/notes/:noteID",
+      "/api/notes/",
       expect.any(Function)
     );
     expect(mockApp.delete).toHaveBeenCalledWith(
