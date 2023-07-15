@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 // firebase database
 import { getDatabase, ref, set, onValue } from "firebase/database";
 // firebase auth
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+// import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

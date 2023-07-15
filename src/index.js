@@ -1,7 +1,12 @@
 import "dotenv/config";
 import express from 'express';
 import cors from 'cors';
-import { log, log_green, log_red, log_yellow } from "./logger.js";
+import { 
+  // log,
+  log_green,
+  log_red,
+  log_yellow
+} from "./logger.js";
 import {
   writeNote,
   readNotes,
