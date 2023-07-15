@@ -17,13 +17,19 @@ const firebaseConfig = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 // Initialize Firebase
-log('Intialiazing with: ', firebaseConfig);
+log("Intialiazing with: project -", firebaseConfig.projectId);
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // write note to firebase
 const writeNote = async (userId, note) => {
-  set(ref(db, `users/${userId}/notes/${note.id}`), note);
+  set(ref(db, `users/${userId}/notes/${note.id}`), note).catch((error) => {
+    log("Failed to write note to the database", error);
+    return error;
+  }).catch((error) => {
+    log("Failed to write note to the database", error);
+    return error;
+  });
 };
 
 // read all user's notes from firebase
@@ -32,6 +38,9 @@ const readNotes = async (userId, callback) => {
   onValue(notesRef, (snapshot) => {
     const data = snapshot.val();
     callback(data);
+  }).catch((error) => {
+    log("Failed to read notes from the database", error);
+    return error;
   });
 };
 
@@ -41,18 +50,33 @@ const readNote = async (userId, noteId, callback) => {
   onValue(noteRef, (snapshot) => {
     const data = snapshot.val();
     callback(data);
+  })
+  .catch((error) => {
+    log("Failed to read note from the database", error);
+    return error;
   });
 };
 
 const updateNote = async (userId, noteId, note) => {
-  set(ref(db, `users/${userId}/notes/${noteId}`), note);
+  set(ref(db, `users/${userId}/notes/${noteId}`), note)
+  .catch((error) => {
+    log("Failed to update note in the database", error);
+    return error;
+  });
 };
 
-
+const deleteNote = async (userId, noteId) => {
+  set(ref(db, `users/${userId}/notes/${noteId}`), null)
+  .catch((error) => {
+    log("Failed to delete note from the database", error);
+    return error;
+  });
+};
 
 module.exports = {
   writeNote,
   readNotes,
   readNote,
   updateNote,
+  deleteNote,
 };
