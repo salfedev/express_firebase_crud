@@ -26,20 +26,17 @@ const writeNote = async (userId, note) => {
   set(ref(db, `users/${userId}/notes/${note.id}`), note).catch((error) => {
     log("Failed to write note to the database", error);
     return error;
-  }).catch((error) => {
-    log("Failed to write note to the database", error);
-    return error;
-  });
+  })
 };
 
 // read all user's notes from firebase
 const readNotes = async (userId, callback) => {
-  const notesRef = ref(db, `users/${userId}/notes`);
-  onValue(notesRef, (snapshot) => {
+  const docRef = ref(db, `users/${userId}/notes`);
+  onValue(docRef, (snapshot) => {
     const data = snapshot.val();
     callback(data);
   }).catch((error) => {
-    log("Failed to read notes from the database", error);
+    log("Failed to read doc from the database", error);
     return error;
   });
 };
