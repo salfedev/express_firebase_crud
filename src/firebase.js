@@ -27,7 +27,7 @@ const writeNote = async (userId, note) => {
 };
 
 // read all user's notes from firebase
-const readNotes = (userId, callback) => {
+const readNotes = async (userId, callback) => {
   const notesRef = ref(db, `users/${userId}/notes`);
   onValue(notesRef, (snapshot) => {
     const data = snapshot.val();
@@ -36,7 +36,7 @@ const readNotes = (userId, callback) => {
 };
 
 // read single note from firebase
-const readNote = (userId, noteId, callback) => {
+const readNote = async (userId, noteId, callback) => {
   const noteRef = ref(db, `users/${userId}/notes/${noteId}`);
   onValue(noteRef, (snapshot) => {
     const data = snapshot.val();
@@ -44,9 +44,15 @@ const readNote = (userId, noteId, callback) => {
   });
 };
 
+const updateNote = async (userId, noteId, note) => {
+  set(ref(db, `users/${userId}/notes/${noteId}`), note);
+};
+
+
 
 module.exports = {
-  writeNoteData: writeNote,
-  readNotesData: readNotes,
-  readNoteData: readNote,
+  writeNote,
+  readNotes,
+  readNote,
+  updateNote,
 };
