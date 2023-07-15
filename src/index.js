@@ -16,13 +16,14 @@ app.get("/api/notes", async (req, res) => {
     await readNoteData(userId, noteId, (data) => {
       return res.send(data);
     });
+  }else {
+    await readNotesData(userId, (data) => {
+      return res.send(data);
+    });
   }
   if (!userId) {
-    return res.send("No user id provided");
+    return res.send({ error: "No user ID provided"});
   }
-  await readNotesData(userId, (data) => {
-    return res.send(data);
-  });
 });
 app.post("/api/notes", async (req, res) => {
   const { userId, title, content } = req.query;
