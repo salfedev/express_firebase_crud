@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "test": "jest . --runInBand --detectOpenHandles --forceExit",
+    "test": "jest . --runInBand --detectOpenHandles --forceExit --collectCoverage=true",
     "test-w": "jest . --runInBand --detectOpenHandles --watchAll"
   },
   "keywords": [],
