@@ -1,34 +1,28 @@
 import 'dotenv/config';
-const { writeNote, readNotes } = require("../../src/firebase");
 describe("Firebase", () => {
+  const mockData = {
+    content: "Test content",
+    id: "456",
+    tags: ["test", "jest"],
+    title: "Test note",
+    userId: "123",
+  };
+  jest.mock("firebase/app", () => {
+    return {
+      initializeApp: jest.fn(),
+    };
+  });
+  jest.mock("firebase/database", () => {
+    return {
+      getDatabase: jest.fn(),
+      ref: jest.fn().mockResolvedValue(mockData),
+      set: jest.fn().mockResolvedValue(mockData),
+      onValue: jest.fn().mockResolvedValue([mockData, mockData]),
+    };
+  });
+
   it("should write a note to the database", async () => {
-    jest.mock("firebase/app", () => {
-      return {
-        initializeApp: jest.fn(),
-      };
-    });
-
-    jest.mock("firebase/database", () => {
-      return {
-        getDatabase: jest.fn(),
-        ref: jest.fn().mockImplementation(() => ({
-          userId: "123",
-          id: "456",
-          title: "Test note",
-          content: "Test content",
-          tags: ["test", "jest"],
-        })),
-        set: jest.fn().mockImplementation(() => ({
-          userId: "123",
-          id: "456",
-          title: "Test note",
-          content: "Test content",
-          tags: ["test", "jest"],
-        })),
-        onValue: jest.fn(),
-      };
-    });
-
+    const { writeNote } = require("../../src/firebase");
     const note = {
       userId: "123",
       id: "456",
@@ -38,11 +32,12 @@ describe("Firebase", () => {
     };
 
     await writeNote(note.userId, note).then((response) => {
-      expect(response).toBe(undefined);
+      expect(response).toEqual(mockData);
     });
   });
 
-  xit("should read all user's notes from the database", async () => {
+  it("should read all user's notes from the database", async () => {
+    const { readNotes } = require("../../src/firebase");
     const userId = "123"
     await readNotes(userId, (data) => {
       expect(data).toBe(undefined);
