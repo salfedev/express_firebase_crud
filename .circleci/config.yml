@@ -20,8 +20,6 @@ jobs:
           command: npm run test --ci --runInBand --reporters=default --reporters=jest-junit
       - store_artifacts:
           path: coverage
-      - store_test_results:
-          path: ./test-results/
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
