@@ -45,6 +45,7 @@ app.post("/api/notes", async (req, res) => {
   })
   .catch((error) => {
     log_red("Failed to write note to the database", error);
+    return error;
   });
 });
 app.put("/api/notes/:noteID", async (req, res) => {
@@ -60,6 +61,10 @@ app.put("/api/notes/:noteID", async (req, res) => {
   await updateNote(userId, noteId, note).then((response) => {
     log_yellow("Note updated in the database");
     return res.send(response);
+  })
+  .catch((error) => {
+    log_red("Failed to update note in the database", error);
+    return error;
   });
 });
 app.delete("/api/notes/:noteID", (req, res) => {
