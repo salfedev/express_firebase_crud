@@ -40,7 +40,7 @@ describe("Index - server", () => {
       expect.any(Function)
     );
     expect(mockApp.delete).toHaveBeenCalledWith(
-      "/api/notes/:noteID",
+      "/api/notes/",
       expect.any(Function)
     );
   });

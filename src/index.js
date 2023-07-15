@@ -73,8 +73,8 @@ app.put("/api/notes/", async (req, res) => {
 });
 // delete note
 app.delete("/api/notes/", async (req, res) => {
-  log_red(`DELETE HTTP method on /notes/${req.params.noteID} resource`);
   const { userId, noteId } = req.query;
+  log_red(`DELETE HTTP method on /notes/${noteId} resource`);
   await deleteNote(userId, noteId).then((response) => {
     log_yellow("Note deleted from the database");
     return res.send(response);
