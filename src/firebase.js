@@ -43,8 +43,8 @@ const readRecord = async (userId, record, callback) => {
   })
 };
 
-const updateNote = async (userId, noteId, note) => {
-  set(ref(db, `users/${userId}/notes/${noteId}`), note)
+const updateRecord = async (userId, record, data) => {
+  set(ref(db, `users/${userId}/${record.type}/${record.id}`), data)
   .catch((error) => {
     log("Failed to update note in the database", error);
     return error;
@@ -67,6 +67,9 @@ module.exports = {
   readNote: async (userId, noteId, callback) => {
     return await readRecord(userId, { type: "notes", id: noteId }, callback);
   },
-  updateNote,
+  updateNote: async (userId, noteId, note) => {
+    const record = {id: noteId, type: "notes"};
+    return await updateRecord(userId, record, note);
+  },
   deleteNote,
 };
