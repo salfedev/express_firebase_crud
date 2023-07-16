@@ -21,7 +21,7 @@ log("Intialiazing with: project -", firebaseConfig.projectId);
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// write note to firebase
+// write record to firebase users's collection
 const writeRecord = async (userId, record) => {
   return set(
     ref(db, `users/${userId}/${record.type}/${record.id}`),
@@ -32,9 +32,11 @@ const writeRecord = async (userId, record) => {
   });
 };
 
-// read all or a single note from firebase
-const readNote = async (userId, noteId, callback) => {
-  let noteRef = noteId ? ref(db, `users/${userId}/notes/${noteId}`) : ref(db, `users/${userId}/notes`);
+// read all or a single record from firebase users's collection
+const readRecord = async (userId, record, callback) => {
+  let noteRef = record.id
+    ? ref(db, `users/${userId}/${record.type}/${record.id}`)
+    : ref(db, `users/${userId}/${record.type}`);
   return await onValue(noteRef, (snapshot) => {
     const data = snapshot.val();
     return callback(data);
@@ -62,7 +64,9 @@ module.exports = {
     record.type = "notes";
     return await writeRecord(userId, record);
   },
-  readNote,
+  readNote: async (userId, noteId, callback) => {
+    return await readRecord(userId, { type: "notes", id: noteId }, callback);
+  },
   updateNote,
   deleteNote,
 };
