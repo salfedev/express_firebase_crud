@@ -22,11 +22,14 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // write note to firebase
-const writeNote = async (userId, note) => {
-  return set(ref(db, `users/${userId}/notes/${note.id}`), note).catch((error) => {
+const writeRecord = async (userId, record) => {
+  return set(
+    ref(db, `users/${userId}/${record.type}/${record.id}`),
+    record
+  ).catch((error) => {
     log("Failed to write note to the database", error);
     return error;
-  })
+  });
 };
 
 // read all or a single note from firebase
@@ -55,7 +58,10 @@ const deleteNote = async (userId, noteId) => {
 };
 
 module.exports = {
-  writeNote,
+  writeNote: async (userId, record) => {
+    record.type = "notes";
+    return await writeRecord(userId, record);
+  },
   readNote,
   updateNote,
   deleteNote,
