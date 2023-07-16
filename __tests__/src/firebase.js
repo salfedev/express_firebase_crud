@@ -37,16 +37,21 @@ describe("Firebase", () => {
   });
 
   it("should read all user's notes from the database", async () => {
-    const { readNotes } = require("../../src/firebase");
+    const { readNote } = require("../../src/firebase");
     const userId = "123"
-    await readNotes(userId, (data) => {
+    await readNote(userId, null, (data) => {
       expect(data).toBe(undefined);
     });
   });
 
-  // it("should read a single note from the database", async () => {
-    
-  // });
+  it("should read a single note from the database", async () => {
+    const { readNote } = require("../../src/firebase");
+    const userId = "123";
+    const noteId = "456";
+    await readNote(userId, noteId, (data) => {
+      expect(data).toBe(undefined);
+    });
+  });
   // it's late and I'm tired
   // TODO: clean up those expect(undefined) tests and figure a better way to cover this, write tests for readNote, updateNote, deleteNote
 });

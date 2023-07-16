@@ -34,7 +34,7 @@ const readNote = async (userId, noteId, callback) => {
   let noteRef = noteId ? ref(db, `users/${userId}/notes/${noteId}`) : ref(db, `users/${userId}/notes`);
   return await onValue(noteRef, (snapshot) => {
     const data = snapshot.val();
-    callback(data);
+    return callback(data);
   })
 };
 
