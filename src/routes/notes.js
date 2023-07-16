@@ -8,13 +8,13 @@ module.exports = (app, db, logger) => {
       await db.readNote(userId, noteId, (data) => {
         return res.send(data);
       });
-    }else {
+    } else {
       await db.readNote(userId, null, (data) => {
         return res.send(data);
       });
     }
     if (!userId) {
-      return res.send({ error: "No user ID provided"});
+      return res.send({ error: "No user ID provided" });
     }
   });
   app.post("/api/notes", async (req, res) => {
@@ -34,7 +34,7 @@ module.exports = (app, db, logger) => {
         return res.send(response);
       })
       .catch((error) => {
-        log_red("Failed to write note to the database", error);
+        logger.log_red("Failed to write note to the database", error);
         return error;
       });
   });
@@ -56,14 +56,14 @@ module.exports = (app, db, logger) => {
         return res.send(response);
       })
       .catch((error) => {
-        log_red("Failed to update note in the database", error);
+        logger.log_red("Failed to update note in the database", error);
         return error;
       });
   });
   // delete note
   app.delete("/api/notes/", async (req, res) => {
     const { userId, noteId } = req.query;
-    log_red(`DELETE HTTP method on /notes/${noteId} resource`);
+    logger.log_red(`DELETE HTTP method on /notes/${noteId} resource`);
     await db
       .deleteNote(userId, noteId)
       .then((response) => {
@@ -71,7 +71,7 @@ module.exports = (app, db, logger) => {
         return res.send(response);
       })
       .catch((error) => {
-        log_red("Failed to delete note from the database", error);
+        logger.log_red("Failed to delete note from the database", error);
         return error;
       });
   });
