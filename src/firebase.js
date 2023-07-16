@@ -34,10 +34,10 @@ const writeRecord = async (userId, record) => {
 
 // read all or a single record from firebase users's collection
 const readRecord = async (userId, record, callback) => {
-  let noteRef = record.id
+  let recordRef = record.id
     ? ref(db, `users/${userId}/${record.type}/${record.id}`)
     : ref(db, `users/${userId}/${record.type}`);
-  return await onValue(noteRef, (snapshot) => {
+  return await onValue(recordRef, (snapshot) => {
     const data = snapshot.val();
     return callback(data);
   })
@@ -51,14 +51,6 @@ const updateRecord = async (userId, record, data) => {
   });
 };
 
-const deleteNote = async (userId, noteId) => {
-  set(ref(db, `users/${userId}/notes/${noteId}`), null)
-  .catch((error) => {
-    log("Failed to delete note from the database", error);
-    return error;
-  });
-};
-
 module.exports = {
   writeNote: async (userId, record) => {
     record.type = "notes";
@@ -68,8 +60,11 @@ module.exports = {
     return await readRecord(userId, { type: "notes", id: noteId }, callback);
   },
   updateNote: async (userId, noteId, note) => {
-    const record = {id: noteId, type: "notes"};
+    const record = { id: noteId, type: "notes" };
     return await updateRecord(userId, record, note);
   },
-  deleteNote,
+  deleteNote: async (userId, noteId, note) => {
+    const record = { id: noteId, type: "notes" };
+    return await updateRecord(userId, record, null);
+  },
 };
