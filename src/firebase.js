@@ -63,8 +63,23 @@ module.exports = {
     const record = { id: noteId, type: "notes" };
     return await updateRecord(userId, record, note);
   },
-  deleteNote: async (userId, noteId, note) => {
+  deleteNote: async (userId, noteId) => {
     const record = { id: noteId, type: "notes" };
     return await updateRecord(userId, record, null);
   },
+  createTeam: async (userId, team) => {
+    const record = { ...team, type: "teams" };
+    return await writeRecord(userId, record);
+  },
+  getTeam: async (userId, teamId, callback) => {
+    return await readRecord(userId, { type: "teams", id: teamId }, callback);
+  },
+  updateTeam: async (userId, teamId, team) => {
+    const record = { id: teamId, type: "teams" };
+    return await updateRecord(userId, record, team);
+  },
+  deleteTeam: async (userId, teamId) => {
+    const record = { id: teamId, type: "teams" };
+    return await updateRecord(userId, record, null);
+  }
 };
