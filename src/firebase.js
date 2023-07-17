@@ -57,8 +57,8 @@ const readRecord = async (userId, record, callback) => {
 
 const updateRecord = async (userId, record, data) => {
   const type = record.type;
-  data.updatedAt = new Date().toDateString();
-  logData('updating', type, data);
+  data ? data.updatedAt = new Date().toDateString() : data = null;
+  logData((data ? 'updating' : 'deleting'), type, record);
   set(ref(db, `users/${userId}/${type}/${record.id}`), data).catch(
     (error) => {
       logger.red(`DB:Failed to update ${type} in the database`, error);
