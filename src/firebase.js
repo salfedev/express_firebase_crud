@@ -22,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const logData = (operation, type, data) => {
-  logger.blue(`--${operation} to : `, type);
+  logger.blue(`--${operation} : `, type);
   logger.debug("--with data: ", data);
 };
 // write record to firebase users's collection

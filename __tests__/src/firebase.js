@@ -1,5 +1,12 @@
 import 'dotenv/config';
 describe("Firebase", () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.spyOn(console, "log").mockImplementation(() => {}); //silence console.log in tests
+  });
+  afterAll(() => {
+    jest.resetModules();
+  });
   const mockData = {
     content: "Test content",
     id: "456",
