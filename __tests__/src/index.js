@@ -1,4 +1,11 @@
 describe("Index - server", () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.spyOn(console, "log").mockImplementation(() => {}); //silence console.log in tests
+  });
+  afterAll(() => {
+    jest.resetModules();
+  });
   it("should return 200", async () => {
     const mockApp = {
       use: jest.fn(),
