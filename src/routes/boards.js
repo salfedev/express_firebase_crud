@@ -11,7 +11,7 @@ module.exports = (app, db, logger) => {
         return res.send(data);
       });
     } else {
-      await db.getBoard(userId, null, (data) => {
+      await db.getBoard(userId, teamId, null, (data) => {
         return res.send(data);
       });
     }
@@ -28,8 +28,8 @@ module.exports = (app, db, logger) => {
       sprint,
       description,
       teamId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toDateString(),
+      updatedAt: new Date().toDateString(),
     };
     await db
       .createBoard(userId, Board)
