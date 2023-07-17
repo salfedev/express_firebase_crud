@@ -81,5 +81,16 @@ module.exports = {
   deleteTeam: async (userId, teamId) => {
     const record = { id: teamId, type: "teams" };
     return await updateRecord(userId, record, null);
+  },
+  getBoard: async (userId, teamId, boardId, callback) => {
+    return await readRecord(
+      userId,
+      { type: `teams/${teamId}/boards/`, id: boardId },
+      callback
+    );
+  },
+  createBoard: async (userId, board) => {
+    const record = { ...board, type: `teams/${board.teamId}/boards/` };
+    return await writeRecord(userId, record);
   }
 };
