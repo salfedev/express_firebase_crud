@@ -27,8 +27,8 @@ const writeRecord = async (userId, record) => {
     ref(db, `users/${userId}/${record.type}/${record.id}`),
     record
   ).catch((error) => {
-    log("Failed to write note to the database", error);
-    return error;
+    log(`DB:Failed to write ${record.type} to the database`, error.message);
+    throw error;
   });
 };
 
@@ -46,7 +46,7 @@ const readRecord = async (userId, record, callback) => {
 const updateRecord = async (userId, record, data) => {
   set(ref(db, `users/${userId}/${record.type}/${record.id}`), data)
   .catch((error) => {
-    log("Failed to update note in the database", error);
+    log("DB:Failed to update ${record.type} in the database", error);
     return error;
   });
 };

@@ -5,11 +5,11 @@ module.exports = (app, db, logger) => {
     const userId = req.query?.userId || null;
     const teamId = req.query?.teamId || null;
     if (teamId) {
-      await db.readNote(userId, teamId, (data) => {
+      await db.getTeam(userId, teamId, (data) => {
         return res.send(data);
       });
     } else {
-      await db.readNote(userId, null, (data) => {
+      await db.getTeam(userId, null, (data) => {
         return res.send(data);
       });
     }
@@ -18,60 +18,60 @@ module.exports = (app, db, logger) => {
     }
   });
   app.post("/api/teams", async (req, res) => {
-    const { userId, title, content, tags } = req.query;
-    logger.log_yellow(userId, title, content);
-    const note = {
+    const { userId, title, description, members } = req.query;
+    logger.log_yellow(userId, title, description);
+    const Team = {
       userId: userId,
       id: uuid4(),
       title: title,
-      content: content,
-      tags: tags ? tags.split(",") : [],
+      description,
+      members: members ? members.split(",") : [],
     };
     await db
-      .writeNote(note.userId, note)
+      .createTeam(userId, Team)
       .then((response) => {
-        logger.log_yellow("Note written to the database");
+        logger.log_yellow("Team written to the database");
         return res.send(response);
       })
       .catch((error) => {
-        logger.log_red("Failed to write note to the database", error);
+        logger.log_red("Route:Failed to write Team to the database", error);
         return error;
       });
   });
-  // update note
+  // update Team
   app.put("/api/teams/", async (req, res) => {
-    const { userId, teamId, title, content, tags } = req.query;
+    const { userId, teamId, title, description, members } = req.query;
     logger.log_yellow(`PUT HTTP method on /teams/${teamId} resource`);
-    const note = {
-      userId,
-      title,
-      content,
+    const Team = {
+      userId: userId,
       id: teamId,
-      tags: tags ? tags.split(",") : [],
+      title: title,
+      description,
+      members: members ? members.split(",") : [],
     };
     await db
-      .updateNote(userId, teamId, note)
+      .updateTeam(userId, teamId, Team)
       .then((response) => {
-        logger.log_yellow("Note updated in the database");
+        logger.log_yellow("Team updated in the database");
         return res.send(response);
       })
       .catch((error) => {
-        logger.log_red("Failed to update note in the database", error);
+        logger.log_red("Route:Failed to update Team in the database", error);
         return error;
       });
   });
-  // delete note
+  // delete Team
   app.delete("/api/teams/", async (req, res) => {
     const { userId, teamId } = req.query;
     logger.log_red(`DELETE HTTP method on /teams/${teamId} resource`);
     await db
-      .deleteNote(userId, teamId)
+      .deleteTeam(userId, teamId)
       .then((response) => {
-        logger.log_yellow("Note deleted from the database");
+        logger.log_yellow("Route:Team deleted from the database");
         return res.send(response);
       })
       .catch((error) => {
-        logger.log_red("Failed to delete note from the database", error);
+        logger.log_red("Route:Failed to delete Team from the database", error);
         return error;
       });
   });
