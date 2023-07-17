@@ -28,8 +28,6 @@ module.exports = (app, db, logger) => {
       sprint,
       description,
       teamId,
-      createdAt: new Date().toDateString(),
-      updatedAt: new Date().toDateString(),
     };
     await db
       .createBoard(userId, Board)

@@ -23,6 +23,8 @@ const db = getDatabase(app);
 
 // write record to firebase users's collection
 const writeRecord = async (userId, record) => {
+  record.createdAt = new Date().toDateString();
+  record.updatedAt = new Date().toDateString();
   return set(
     ref(db, `users/${userId}/${record.type}/${record.id}`),
     record
@@ -40,15 +42,17 @@ const readRecord = async (userId, record, callback) => {
   return await onValue(recordRef, (snapshot) => {
     const data = snapshot.val();
     return callback(data);
-  })
+  });
 };
 
 const updateRecord = async (userId, record, data) => {
-  set(ref(db, `users/${userId}/${record.type}/${record.id}`), data)
-  .catch((error) => {
-    log("DB:Failed to update ${record.type} in the database", error);
-    return error;
-  });
+  record.updatedAt = new Date().toDateString();
+  set(ref(db, `users/${userId}/${record.type}/${record.id}`), data).catch(
+    (error) => {
+      log("DB:Failed to update ${record.type} in the database", error);
+      return error;
+    }
+  );
 };
 
 module.exports = {
@@ -92,5 +96,5 @@ module.exports = {
   createBoard: async (userId, board) => {
     const record = { ...board, type: `teams/${board.teamId}/boards/` };
     return await writeRecord(userId, record);
-  }
+  },
 };
