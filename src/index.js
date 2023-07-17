@@ -63,5 +63,5 @@ app.mount('#app')
 
 // start the Express server
 app.listen(port, () => {
-  logger.log_green(`Server listening on port ${port}!`);
+  logger.green(`Server listening on port ${port}!`);
 });
