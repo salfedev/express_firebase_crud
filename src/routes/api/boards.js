@@ -50,7 +50,7 @@ module.exports = (app, db, logger) => {
       description,
       teamId,
     };
-    logger.debug("Data : ", Board);
+
     await db
       .updateBoard(userId, Board)
       .then((response) => {

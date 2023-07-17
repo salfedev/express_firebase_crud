@@ -22,10 +22,16 @@ const yellow = (...message) => {
   logger.color('yellow').bold().log(...message);
 }
 
+const blue = (...message) => {
+  logger.setLevel('debug');
+  logger.color('blue').bold().log(...message);
+}
+
 module.exports = {
   log,
   debug,
   red,
   green,
   yellow,
+  blue
 };

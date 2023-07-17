@@ -21,12 +21,17 @@ logger.log("Intialiazing with: project -", firebaseConfig.projectId);
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+const logData = (operation, type, data) => {
+  logger.blue(`--${operation} to : `, type);
+  logger.debug("--with data: ", data);
+};
 // write record to firebase users's collection
 const writeRecord = async (userId, record) => {
   const type = record.type;
   record.createdAt = new Date().toDateString();
   record.updatedAt = new Date().toDateString();
   delete record.type;
+  logData('writing', type, record);
   return set(
     ref(db, `users/${userId}/${type}/${record.id}`),
     record
@@ -40,6 +45,7 @@ const writeRecord = async (userId, record) => {
 const readRecord = async (userId, record, callback) => {
   const type = record.type;
   delete record.type;
+  logData('reading', type, record);
   let recordRef = record.id
     ? ref(db, `users/${userId}/${type}/${record.id}`)
     : ref(db, `users/${userId}/${type}`);
@@ -51,9 +57,8 @@ const readRecord = async (userId, record, callback) => {
 
 const updateRecord = async (userId, record, data) => {
   const type = record.type;
-  record.updatedAt = new Date().toDateString();
-  delete record.type;
-  logger.debug("writing to :", type, " with data: ", data);
+  data.updatedAt = new Date().toDateString();
+  logData('updating', type, data);
   set(ref(db, `users/${userId}/${type}/${record.id}`), data).catch(
     (error) => {
       logger.red(`DB:Failed to update ${type} in the database`, error);
